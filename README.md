@@ -46,7 +46,11 @@ The output directory of the static website.
 
 `config.githubOrgName`
 
-The GitHub org users need to be part of.
+The GitHub org users need to be part of. 
+
+You can add multiple orgs by adding spaces between the GitHub org names. Please note the `config.githubOrgAdminToken` referenced below will need to be generated from a user in the multiple GitHub organizations listed here.
+
+Example: `org1` or for multiple organizations `org1 org2 org3`
 
 `config.githubClientId`
 `config.githubClientSecret`

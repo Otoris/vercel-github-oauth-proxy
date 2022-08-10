@@ -21,7 +21,7 @@ export function registerGitHubOAuth(server: FastifyInstance, config: Config) {
     localGenericError: "/login/oauth/error",
     githubAuthorize: "https://github.com/login/oauth/authorize",
     githubToken: "https://github.com/login/oauth/access_token",
-    githubOrgMembers: `https://api.github.com/orgs/${config.githubOrgName}/members`,
+    githubOrgMembers: Array.isArray(config.githubOrgName) ? config.githubOrgName.map((orgName: string) => `https://api.github.com/orgs/${orgName}/members`) : `https://api.github.com/orgs/${config.githubOrgName}/members`,
     githubUserDetails: "https://api.github.com/user",
   }
 
@@ -120,8 +120,8 @@ export function registerGitHubOAuth(server: FastifyInstance, config: Config) {
     return data
   }
 
-  const getGitHubOrgMemberships = async (page = 1): Promise<GitHubOrgMembership[]> => {
-    const url = urls.githubOrgMembers
+  const getGitHubOrgMemberships = async (page = 1, index?: number): Promise<GitHubOrgMembership[]> => {
+    const url = (Array.isArray(urls.githubOrgMembers) && index) ? urls.githubOrgMembers[index] : urls.githubOrgMembers
     const headers = {
       Accept: "application/json",
       Authorization: `Bearer ${config.githubOrgAdminToken}`,
@@ -132,7 +132,7 @@ export function registerGitHubOAuth(server: FastifyInstance, config: Config) {
       page,
     }
 
-    const { data } = await axios.get<GitHubOrgMembership[]>(url, { headers, params })
+    const { data } = await axios.get<GitHubOrgMembership[]>(url as string, { headers, params })
 
     return data
   }
@@ -217,7 +217,13 @@ export function registerGitHubOAuth(server: FastifyInstance, config: Config) {
       let isUserMember= false
 
       do {
-        members = await getGitHubOrgMemberships(page)
+        if (Array.isArray(urls.githubOrgMembers)) {
+          urls.githubOrgMembers.forEach(async (url, index) => {
+            members = members.concat(await getGitHubOrgMemberships(page, index))
+          })
+        } else {
+          members = await getGitHubOrgMemberships(page)
+        }
         page++
         isUserMember = members.some((member) => member.login === user.login)
       } while (!isUserMember && members.length)

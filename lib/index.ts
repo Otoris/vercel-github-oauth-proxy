@@ -24,6 +24,7 @@ export const createLambdaProxyAuthHandler: (config: Config) => NowApiHandler = (
     assert.string.nonEmpty,
   )
   assert(config.githubOrgName, "config.githubOrgName", assert.string.nonEmpty)
+  if (config.githubOrgName.includes(" ")) config.githubOrgName = config.githubOrgName.split(" ")
 
   const server = fastify({ logger: true })
 

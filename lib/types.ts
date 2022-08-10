@@ -5,7 +5,7 @@ export interface Config {
   githubClientId: string
   githubClientSecret: string
   githubOrgAdminToken: string
-  githubOrgName: string
+  githubOrgName: string | string[]
 }
 
 export interface OAuthState {
