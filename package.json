@@ -35,7 +35,7 @@
     "ow": "^0.26.0"
   },
   "devDependencies": {
-    "@types/node": "^16.0.0",
+    "@types/node": "^16.11.48",
     "@vercel/node": "^1.11.1",
     "prettier": "^2.3.2",
     "release-it": "^14.10.0",
