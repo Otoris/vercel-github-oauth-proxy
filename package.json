@@ -23,7 +23,7 @@
   ],
   "scripts": {
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,yml,yaml,md}\"",
-    "prepack": "tsc"
+    "prepack": "tsc --project tsconfig.build.json"
   },
   "dependencies": {
     "@fastify/cookie": "^7.4.0",
