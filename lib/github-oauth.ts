@@ -30,7 +30,7 @@ export function registerGitHubOAuth(server: FastifyInstance, config: Config) {
     user: "user",
   } as const
 
-  const formatQueryParams = (params: NodeJS.Dict<string>) => {
+  const formatQueryParams = (params: {[key: string]: string}) => {
     return "?" + new URLSearchParams(params).toString()
   }
 
