@@ -30,7 +30,7 @@ export function registerGitHubOAuth(server: FastifyInstance, config: Config) {
     user: "user",
   } as const
 
-  const formatQueryParams = (params: {[key: string]: string}) => {
+  const formatQueryParams = (params: {[key: string]: string }) => {
     return "?" + new URLSearchParams(params).toString()
   }
 
@@ -73,7 +73,7 @@ export function registerGitHubOAuth(server: FastifyInstance, config: Config) {
     const query = formatQueryParams({
       client_id: config.githubClientId,
       scope: "read:user",
-      state: req.cookies[cookieNames.state],
+      state: req.cookies[cookieNames.state] ?? "",
     })
     res.redirect(302, urls.githubAuthorize + query)
   }
